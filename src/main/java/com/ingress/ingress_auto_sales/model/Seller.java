@@ -16,7 +16,7 @@ public class Seller {
     private String surname;
     private String phone;
 
-    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Car> cars;
 }
 

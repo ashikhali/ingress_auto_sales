@@ -1,0 +1,54 @@
+version: '3'
+services:
+  ms23:
+    hostname: mysql
+    image: mysql:latest
+    restart: always
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - 3306:3306
+  #    networks:
+  #      - ms23
+  adminer:
+    hostname: mysql
+    image: adminer
+    restart: always
+    ports:
+      - 8580:8080
+  #    networks:
+  #      - ms23
+  ingress_auto_sales:
+    image: aminus7/ing-ingress_auto_sales:1.0.fdfe5f1
+    restart: always
+    ports:
+      - 9091:9090
+    environment:
+      - DB_CONNECTION_IP=ms23
+      - DB_CONNECTION_USER=root
+      - DB_CONNECTION_PASSWORD=password
+      - DB_CONNECTION_PORT=3306
+    depends_on:
+      - ms23
+  reverse-proxy:
+    image: nginx:latest
+    hostname: proxy
+    container_name: reverse_proxy
+    depends_on:
+      - ingress_auto_sales
+    ports:
+      - 8080:80
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+
+volumes:
+  db_data:
+
+
+#networks:
+#  ms23:
+#    driver: bridge

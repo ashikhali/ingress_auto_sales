@@ -1,19 +1,10 @@
-package com.ingress.ingress_auto_sales.model;
+package com.ingress.ingress_auto_sales.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
-@Entity
-@Table(name = "car")
-public class Car {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CarResponseDTO {
     private Long id;
-
     private String mark;
     private String model;
     private int productionYear;
@@ -31,14 +22,6 @@ public class Car {
     private String registrationStatus;
     private String carCondition;
     private String location;
-
-    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<CarFeature> features;
-
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "seller_id")
-    private Seller seller;
-
+    private SellerResponseDTO seller;
 }
 

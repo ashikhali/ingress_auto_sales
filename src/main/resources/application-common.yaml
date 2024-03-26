@@ -1,0 +1,9 @@
+server:
+  port: 9090
+  servlet:
+    context-path: /sales-app
+
+logging:
+  level:
+    org:
+      springframework=TRACE:
