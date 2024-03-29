@@ -4,6 +4,7 @@ services:
     hostname: mysql
     image: mysql:latest
     restart: always
+    container_name: ms23
     volumes:
       - db_data:/var/lib/mysql
     environment:
@@ -16,13 +17,16 @@ services:
     hostname: mysql
     image: adminer
     restart: always
+    container_name: adminer
     ports:
       - 8580:8080
   #    networks:
   #      - ms23
-  ingress_auto_sales:
-    image: aminus7/ing-ingress_auto_sales:1.0.fdfe5f1
+  ingress-auto-sales:
+    image: aminus7/ing-ingress_auto_sales:1.0.8f14e61
     restart: always
+    container_name: ingress-auto-sales
+    hostname: ingress-auto-sales
     ports:
       - 9091:9090
     environment:
@@ -35,9 +39,9 @@ services:
   reverse-proxy:
     image: nginx:latest
     hostname: proxy
-    container_name: reverse_proxy
+    container_name: reverse-proxy
     depends_on:
-      - ingress_auto_sales
+      - ingress-auto-sales
     ports:
       - 8080:80
     extra_hosts:
@@ -47,8 +51,3 @@ services:
 
 volumes:
   db_data:
-
-
-#networks:
-#  ms23:
-#    driver: bridge

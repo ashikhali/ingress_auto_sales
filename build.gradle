@@ -65,3 +65,11 @@ task dockerBuild(type: DockerBuildImage, dependsOn: dockerFile) {
     }
     images.add("$dockerRepoUrl/ing-${project.name}:$version")
 }
+
+task dockerPush(type: DockerPushImage, dependsOn: dockerBuild) {
+    images.add("$dockerRepoUrl/ing-${project.name}:$version")
+
+    registryCredentials.setUsername("$dockerHubUsername")
+    registryCredentials.setPassword("$dockerHubPassword")
+    registryCredentials.setEmail("$dockerHubEmail")
+}
